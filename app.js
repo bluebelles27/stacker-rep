@@ -91,19 +91,19 @@ var showError = function(error){
 // for on StackOverflow
 var getUnanswered = function(tags, request, url, showItem) {
 	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/questions/unanswered",
+		"url": url,
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
 		})
 	.done(function(result){
-		var searchResults = showSearchResults(request.tagged, result.items.length);
+		var searchResults = showSearchResults(tags, result.items.length);
 
 		$('.search-results').html(searchResults);
 
 		$.each(result.items, function(i, item) {
-			var question = showQuestion(item);
-			$('.results').append(question);
+			//var question = showQuestion(item);
+			$('.results').append(showItem(item));
 		});
 	})
 	.fail(function(jqXHR, error, errorThrown){
