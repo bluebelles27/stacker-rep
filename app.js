@@ -13,20 +13,24 @@ $(document).ready( function() {
 		getUnanswered(tags, request, "http://api.stackexchange.com/2.2/questions/unanswered", showQuestion);
 	});
 
-	$('.inspiration-getter').submit(function(event){
+	$('.inspiration-getter').submit( function(event){
+		// zero out results if previous search has run
 		$('.results').html('');
-		var tag=$(this).find("input[name='answerers']").val();
-
+		// get the value of the tags the user submitted
+		var tag = $(this).find("input[name='answerers']").val();
+		
 		var request = {
-			site: 'stackoverflow'
+						site: 'stackoverflow'
 		};
-		var endPoint="http://api.stackexchange.com/" + "2.2/tags/" + tag + "/top-answerers/all_time";
+		var endPoint = "http://api.stackexchange.com/" + "2.2/tags/" + tag + "/top-answerers/all_time";
 		getUnanswered(tag, request, endPoint, showUser);
 	});
 
-	var showUser = function(item){
+	var showUser = function(item) {
+		// clone our user template code
 		var result = $('.templates .user').clone();
-
+		
+		// Set the user details properties in result
 		var userElem = result.find('.user-name-and-pic a');
 		userElem.attr('href', item.user.link);
 		userElem.find(".username").text(item.user.display_name);
