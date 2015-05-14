@@ -97,21 +97,19 @@ var getUnanswered = function(tags, request, url, showItem) {
 		type: "GET",
 		})
 	.done(function(result){
-		var searchResults = showSearchResults(tags, result.items.length);
+			var searchResults = showSearchResults(tags, result.items.length);
 
-		$('.search-results').html(searchResults);
+			$('.search-results').html(searchResults);
 
-		$.each(result.items, function(i, item) {
-			//var question = showQuestion(item);
-			$('.results').append(showItem(item));
+			$.each(result.items, function(i, item) {
+			
+				$('.results').append(showItem(item));
+			});
+		})
+		.fail(function(jqXHR, error, errorThrown){
+			var errorElem = showError(error);
+			$('.search-results').append(errorElem);
 		});
-	})
-	.fail(function(jqXHR, error, errorThrown){
-		var errorElem = showError(error);
-		$('.search-results').append(errorElem);
-	});
-};
+	};
 });
-
-
 
