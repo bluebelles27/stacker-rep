@@ -4,33 +4,31 @@ $(document).ready( function() {
 		$('.results').html('');
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
+		// the parameters we need to pass in our request to StackOverflow's API
 		var request = {
-			tagged: tags,
-			site: 'stackoverflow',
-			order: 'desc',
-			sort: 'creation'
+						tagged: tags,
+						site: 'stackoverflow',
+						order: 'desc',
+						sort: 'creation'
 		};
-		getUnanswered(tags, request, "http://api.stackexchange.com/2.2/questions/unanswered", showQuestion);
+
+		getData(tags, request, "http://api.stackexchange.com/2.2/questions/unanswered", showQuestion);
 	});
 
 	$('.inspiration-getter').submit( function(event){
-		// zero out results if previous search has run
 		$('.results').html('');
-		// get the value of the tags the user submitted
 		var tag = $(this).find("input[name='answerers']").val();
 		
 		var request = {
 						site: 'stackoverflow'
 		};
 		var endPoint = "http://api.stackexchange.com/" + "2.2/tags/" + tag + "/top-answerers/all_time";
-		getUnanswered(tag, request, endPoint, showUser);
+		getData(tag, request, endPoint, showUser);
 	});
 
 	var showUser = function(item) {
-		// clone our user template code
 		var result = $('.templates .user').clone();
-		
-		// Set the user details properties in result
+
 		var userElem = result.find('.user-name-and-pic a');
 		userElem.attr('href', item.user.link);
 		userElem.find(".username").text(item.user.display_name);
@@ -44,64 +42,64 @@ $(document).ready( function() {
 		return result;
 	}
 
-// this function takes the question object returned by StackOverflow 
-// and creates new result to be appended to DOM
-var showQuestion = function(question) {
-	
-	// clone our result template code
-	var result = $('.templates .question').clone();
-	
-	// Set the question properties in result
-	var questionElem = result.find('.question-text a');
-	questionElem.attr('href', question.link);
-	questionElem.text(question.title);
+	// this function takes the question object returned by StackOverflow 
+	// and creates new result to be appended to DOM
+	var showQuestion = function(question) {
+		
+		// clone our result template code
+		var result = $('.templates .question').clone();
+		
+		// Set the question properties in result
+		var questionElem = result.find('.question-text a');
+		questionElem.attr('href', question.link);
+		questionElem.text(question.title);
 
-	// set the date asked property in result
-	var asked = result.find('.asked-date');
-	var date = new Date(1000*question.creation_date);
-	asked.text(date.toString());
+		// set the date asked property in result
+		var asked = result.find('.asked-date');
+		var date = new Date(1000*question.creation_date);
+		asked.text(date.toString());
 
-	// set the #views for question property in result
-	var viewed = result.find('.viewed');
-	viewed.text(question.view_count);
+		// set the #views for question property in result
+		var viewed = result.find('.viewed');
+		viewed.text(question.view_count);
 
-	// set some properties related to asker
-	var asker = result.find('.asker');
-	asker.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
-													question.owner.display_name +
-												'</a>' +
-							'</p>' +
- 							'<p>Reputation: ' + question.owner.reputation + '</p>'
-	);
+		// set some properties related to asker
+		var asker = result.find('.asker');
+		asker.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + question.owner.user_id + ' >' +
+														question.owner.display_name +
+													'</a>' +
+								'</p>' +
+	 							'<p>Reputation: ' + question.owner.reputation + '</p>'
+		);
 
-	return result;
-};
+		return result;
+	};
 
 
-// this function takes the results object from StackOverflow
-// and creates info about search results to be appended to DOM
-var showSearchResults = function(query, resultNum) {
-	var results = resultNum + ' results for <strong>' + query;
-	return results;
-};
+	// this function takes the results object from StackOverflow
+	// and creates info about search results to be appended to DOM
+	var showSearchResults = function(query, resultNum) {
+		var results = resultNum + ' results for <strong>' + query;
+		return results;
+	};
 
-// takes error string and turns it into displayable DOM element
-var showError = function(error){
-	var errorElem = $('.templates .error').clone();
-	var errorText = '<p>' + error + '</p>';
-	errorElem.append(errorText);
-};
+	// takes error string and turns it into displayable DOM element
+	var showError = function(error){
+		var errorElem = $('.templates .error').clone();
+		var errorText = '<p>' + error + '</p>';
+		errorElem.append(errorText);
+	};
 
-// takes a string of semi-colon separated tags to be searched
-// for on StackOverflow
-var getUnanswered = function(tags, request, url, showItem) {
-	var result = $.ajax({
-		"url": url,
-		data: request,
-		dataType: "jsonp",
-		type: "GET",
-		})
-	.done(function(result){
+	// takes a string of semi-colon separated tags to be searched
+	// for on StackOverflow
+	var getData = function(tags, request, url, showItem) {
+		var result = $.ajax({
+			"url": url,
+			data: request,
+			dataType: "jsonp",
+			type: "GET",
+			})
+		.done(function(result){
 			var searchResults = showSearchResults(tags, result.items.length);
 
 			$('.search-results').html(searchResults);
@@ -117,4 +115,6 @@ var getUnanswered = function(tags, request, url, showItem) {
 		});
 	};
 });
+
+
 
