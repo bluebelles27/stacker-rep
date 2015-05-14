@@ -6,12 +6,13 @@ $(document).ready( function() {
 		var tags = $(this).find("input[name='tags']").val();
 		var request = {
 			tagged: tags,
-			stie: 'stackoverflow',
+			site: 'stackoverflow',
 			order: 'desc',
 			sort: 'creation'
 		};
 		getUnanswered(tags, request, "http://api.stackexchange.com/2.2/questions/unanswered", showQuestion);
 	});
+	
 	$('.inspiration-getter').submit(function(event){
 		$('.results').html('');
 		var tag=$(this).find("input[name='answerers']").val();
