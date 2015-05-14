@@ -12,7 +12,7 @@ $(document).ready( function() {
 		};
 		getUnanswered(tags, request, "http://api.stackexchange.com/2.2/questions/unanswered", showQuestion);
 	});
-	
+
 	$('.inspiration-getter').submit(function(event){
 		$('.results').html('');
 		var tag=$(this).find("input[name='answerers']").val();
@@ -21,7 +21,7 @@ $(document).ready( function() {
 			site: 'stackoverflow'
 		};
 		var endPoint="http://api.stackexchange.com/" + "2.2/tags/" + tag + "/top-answerers/all_time";
-		getUnanswered(tag, request, endPoint, showUser);
+		getData(tag, request, endPoint, showUser);
 	});
 
 	var showUser = function(item){
@@ -29,8 +29,8 @@ $(document).ready( function() {
 
 		var userElem = result.find('.user-name-and-pic a');
 		userElem.attr('href', item.user.link);
-		userElem.find("username").text(item.user.display_name);
-		var img = "<img src='" + item.user.profile_image + "'alt=" + item.user.display_name + "'/>";
+		userElem.find(".username").text(item.user.display_name);
+		var img = "<img src='" + item.user.profile_image + "' alt='" + item.user.display_name + "'/>";
 		userElem.find(".img").append(img);
 
 		result.find(".user-reputation").text(item.user.reputation);
