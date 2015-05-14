@@ -26,7 +26,7 @@ $(document).ready( function() {
 	var showUser = function(item){
 		var result = $('.templates .user').clone();
 
-		var user Elem = result.find('.user-name-and-pic a');
+		var userElem = result.find('.user-name-and-pic a');
 		userElem.attr('href', item.user.link);
 		userElem.find("username").text(item.user.display_name);
 		var img = "<img src='" + item.user.profile_image + "'alt=" + item.user.display_name + "'/>";
