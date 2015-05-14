@@ -21,7 +21,7 @@ $(document).ready( function() {
 			site: 'stackoverflow'
 		};
 		var endPoint="http://api.stackexchange.com/" + "2.2/tags/" + tag + "/top-answerers/all_time";
-		getData(tag, request, endPoint, showUser);
+		getUnanswered(tag, request, endPoint, showUser);
 	});
 
 	var showUser = function(item){
